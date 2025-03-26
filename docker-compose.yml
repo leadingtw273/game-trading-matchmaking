@@ -1,41 +1,83 @@
 services:
   # 前端服務配置
   frontend:
+    container_name: frontend  # 指定容器名稱，方便識別
     build:
       context: ./frontend  # 使用 ./frontend 目錄中的 Dockerfile 構建映像
       dockerfile: Dockerfile.dev  # 指定使用的 Dockerfile 文件名
-    container_name: frontend  # 指定容器名稱，方便識別
     ports:
       - "5173:5173"  # 將容器的 5173 端口映射到主機的 5173 端口
     volumes:
       - ./frontend:/app  # 掛載本地前端代碼到容器中，支持即時更新
-      - /app/node_modules  # 將容器內的 node_modules 排除在掛載外，避免被本地覆蓋
-    # depends_on:
-    #   - backend  # 確保後端服務先啟動
+      - frontend-node-modules:/app/node_modules  # 將容器內的 node_modules 排除在掛載外，避免被本地覆蓋
     environment:
       - NODE_ENV=development  # 設置環境變量
       - VITE_API_URL=http://localhost:3000  # 設置 API 的基礎 URL
+    depends_on:
+      - backend  # 確保後端服務先啟動
     restart: unless-stopped  # 除非手動停止，否則繼續重啟
-    
+
   # 後端服務配置
   backend:
+    container_name: backend  # 指定容器名稱
     build:
       context: ./backend  # 使用 ./backend 目錄中的 Dockerfile 構建映像
       dockerfile: Dockerfile.dev  # 指定使用的 Dockerfile 文件名
-    container_name: backend  # 指定容器名稱
     ports:
       - "3000:3000"  # 將容器的 3000 端口映射到主機的 3000 端口
     volumes:
       - ./backend:/app  # 掛載本地後端代碼到容器中，支持即時更新
-      - /app/node_modules  # 保護容器內的 node_modules
-    # depends_on:
-    #   - db  # 確保數據庫服務先啟動
+      - backend-node-modules:/app/node_modules  # 保護容器內的 node_modules
     environment:
       - NODE_ENV=development  # 設置環境變量
-      # - DB_HOST=db  # 注意這裡使用服務名稱作為主機名，而非 localhost
-      # - DB_USER=root
-      # - DB_PASSWORD=password  # 在生產環境中應使用更安全的密碼
-      # - DB_NAME=myapp
-      # - DB_PORT=3306
-      # - LANG=C.UTF-8
+      - DB_HOST=db  # 注意這裡使用服務名稱作為主機名，而非 localhost
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres  # 在生產環境中應使用更安全的密碼
+      - DB_NAME=myapp
+      - DB_PORT=3306
+      - LANG=C.UTF-8
+    depends_on:
+      - db  # 確保數據庫服務先啟動
     restart: unless-stopped  # 自動重啟策略
+
+  # 資料庫服務配置
+  db:
+    container_name: db-postgres
+    image: postgres:16
+    ports:
+      - "5432:5432"  # 將容器的 5432 端口映射到主機
+    volumes:
+      - db-data:/var/lib/postgresql/data  # 持久化數據
+      - ./sql:/docker-entrypoint-initdb.d  # 掛載初始化腳本目錄
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    restart: unless-stopped  # 自動重啟策略
+
+  # 資料庫工具服務配置
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"  # 將容器的 80 端口映射到主機的 5050 端口
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin  # 持久化數據
+      - ./scripts/pgadmin-servers.json:/pgadmin4/servers.json  # 掛載 servers.json 文件
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=leadingtw@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=1234qwer
+      - PGADMIN_CONFIG_SESSION_EXPIRATION_TIME=365
+      - PGADMIN_CONFIG_MAX_SESSION_IDLE_TIME=60
+    depends_on:
+      - db  # 確保數據庫服務先啟動
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # 配置宿主機訪問
+    restart: unless-stopped  # 自動重啟策略
+
+volumes:
+  db-data:  # 資料庫數據卷
+  pgadmin-data:  # pgAdmin 數據卷
+  frontend-node-modules:  # 前端 node_modules 卷
+  backend-node-modules:  # 後端 node_modules 卷

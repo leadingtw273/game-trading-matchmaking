@@ -1,4 +1,3 @@
-
 -- 觸發器函式-更新 transactions 的 updated_at 欄位
 CREATE OR REPLACE FUNCTION update_transactions_on_commodities_update()
 RETURNS TRIGGER AS $$
