@@ -110,24 +110,24 @@ CREATE TYPE "currency_type" AS ENUM (
   'VND'
 );
 
-CREATE TYPE "transaction_types" AS ENUM (
+CREATE TYPE "transaction_type" AS ENUM (
   'sale',
   'purchase'
 );
 
-CREATE TYPE "transaction_status" AS ENUM (
+CREATE TYPE "transaction_status_type" AS ENUM (
   'unfinished',
   'finished',
   'cancelled'
 );
 
-CREATE TYPE "transaction_commodities" AS ENUM (
+CREATE TYPE "commodity_type" AS ENUM (
   'appearance',
   'character',
   'coin'
 );
 
-CREATE TYPE "transaction_methods" AS ENUM (
+CREATE TYPE "transaction_method_type" AS ENUM (
   'PAID_LETTER',
   'PLAYER_TRADE',
   'BANK_TRANSFER',
