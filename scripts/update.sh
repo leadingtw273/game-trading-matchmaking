@@ -30,6 +30,11 @@ else
     echo -e "${RED}前端目錄不存在${NC}"
 fi
 
+# 更新前端依賴
+echo -e "${GREEN}安裝前端依賴...${NC}"
+cd "$PROJECT_ROOT/frontend"
+pnpm install
+
 # 檢查後端目錄是否存在
 if [ -d "$PROJECT_ROOT/backend" ]; then
     echo -e "${GREEN}更新後端代碼...${NC}"
@@ -45,29 +50,9 @@ else
     echo -e "${RED}後端目錄不存在${NC}"
 fi
 
-# 覆蓋環境變數
-echo -e "${GREEN}覆蓋環境變數...${NC}"
-
-# 覆蓋前端環境變數
-if [ -f "$PROJECT_ROOT/.env.frontend" ] && [ -f "$PROJECT_ROOT/frontend/.env.local" ]; then
-    cp -f "$PROJECT_ROOT/.env.frontend" "$PROJECT_ROOT/frontend/.env.local"
-    echo -e "${GREEN}前端環境變數已覆蓋${NC}"
-elif [ ! -f "$PROJECT_ROOT/.env.frontend" ]; then
-    echo -e "${RED}前端 .env.frontend 文件不存在${NC}"
-else
-    echo -e "${YELLOW}前端 .env 文件不存在，創建新文件${NC}"
-    cp "$PROJECT_ROOT/.env.frontend" "$PROJECT_ROOT/frontend/.env.local"
-fi
-
-# 覆蓋後端環境變數
-if [ -f "$PROJECT_ROOT/.env.backend" ] && [ -f "$PROJECT_ROOT/backend/.env.local" ]; then
-    cp -f "$PROJECT_ROOT/.env.backend" "$PROJECT_ROOT/backend/.env.local"
-    echo -e "${GREEN}後端環境變數已覆蓋${NC}"
-elif [ ! -f "$PROJECT_ROOT/.env.backend" ]; then
-    echo -e "${RED}後端 .env.backend 文件不存在${NC}"
-else
-    echo -e "${YELLOW}後端 .env 文件不存在，創建新文件${NC}"
-    cp "$PROJECT_ROOT/.env.backend" "$PROJECT_ROOT/backend/.env.local"
-fi
+# 更新後端依賴
+echo -e "${GREEN}安裝後端依賴...${NC}"
+cd "$PROJECT_ROOT/backend"
+pnpm install
 
 echo -e "${GREEN}=== 操作完成 ===${NC}"
