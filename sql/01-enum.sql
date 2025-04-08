@@ -1,3 +1,4 @@
+-- 聯絡類型
 CREATE TYPE "contact_type" AS ENUM (
   'LINE',
   'DISCORD',
@@ -5,6 +6,7 @@ CREATE TYPE "contact_type" AS ENUM (
   'PRIVATE_MESSAGE'
 );
 
+-- 體型類型
 CREATE TYPE "body_type" AS ENUM (
   'MAN',
   'WOMAN',
@@ -12,18 +14,21 @@ CREATE TYPE "body_type" AS ENUM (
   'GIRL'
 );
 
+-- 陣營類型
 CREATE TYPE "camp_type" AS ENUM (
   'NEUTRAL',
   'HAO_QI_MENG',
   'E_REN_GU'
 );
 
+-- 競技場類型
 CREATE TYPE "arena_type" AS ENUM (
   'TWO_VS_TWO',
   'THREE_VS_THREE',
   'FIVE_VS_FIVE'
 );
 
+-- 角色外觀類型
 CREATE TYPE "skin_type" AS ENUM (
   'HAIR',
   'BODY',
@@ -31,11 +36,13 @@ CREATE TYPE "skin_type" AS ENUM (
   'INTERACTION'
 );
 
+-- 裝備類型
 CREATE TYPE "gear_type" AS ENUM (
   'PVP',
   'PVE'
 );
 
+-- 門派類型
 CREATE TYPE "sect_type" AS ENUM (
   'DA_XIA',
   'CHUN_YANG',
@@ -59,6 +66,7 @@ CREATE TYPE "sect_type" AS ENUM (
   'WAN_LING'
 );
 
+-- 內功類型
 CREATE TYPE "inner_skill_type" AS ENUM (
   'QI_XIU_BING_XIN_JUE',
   'QI_XIU_YUN_SHANG_XIN_JING',
@@ -92,6 +100,7 @@ CREATE TYPE "inner_skill_type" AS ENUM (
   'WAN_LING_SHAN_HAI_XIN_JUE'
 );
 
+-- 外觀類型
 CREATE TYPE "appearance_type" AS ENUM (
   'GIFT_BOX',
   'CLOAK',
@@ -103,6 +112,7 @@ CREATE TYPE "appearance_type" AS ENUM (
   'OTHER'
 );
 
+-- 幣種類型
 CREATE TYPE "currency_type" AS ENUM (
   'COIN',
   'TWD',
@@ -110,23 +120,27 @@ CREATE TYPE "currency_type" AS ENUM (
   'VND'
 );
 
+-- 交易類型
 CREATE TYPE "transaction_type" AS ENUM (
   'sale',
   'purchase'
 );
 
+-- 交易狀態類型
 CREATE TYPE "transaction_status_type" AS ENUM (
   'unfinished',
   'finished',
   'cancelled'
 );
 
+-- 商品類型
 CREATE TYPE "commodity_type" AS ENUM (
   'appearance',
   'character',
   'coin'
 );
 
+-- 交易方式類型
 CREATE TYPE "transaction_method_type" AS ENUM (
   'PAID_LETTER',
   'PLAYER_TRADE',

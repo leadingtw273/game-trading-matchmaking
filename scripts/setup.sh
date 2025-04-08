@@ -41,23 +41,4 @@ else
     echo -e "${RED}後端版本庫克隆失敗${NC}"
 fi
 
-# 複製環境變數檔案
-echo -e "${GREEN}設置環境變數...${NC}"
-
-# 複製前端環境變數
-if [ -f "$PROJECT_ROOT/.env.frontend" ]; then
-    cp -f "$PROJECT_ROOT/.env.frontend" "$PROJECT_ROOT/frontend/.env.local"
-    echo -e "${GREEN}前端環境變數設置成功${NC}"
-else
-    echo -e "${RED}前端 .env.frontend 文件不存在，無法設置環境變數${NC}"
-fi
-
-# 複製後端環境變數
-if [ -f "$PROJECT_ROOT/.env.backend" ]; then
-    cp -f "$PROJECT_ROOT/.env.backend" "$PROJECT_ROOT/backend/.env.local"
-    echo -e "${GREEN}後端環境變數設置成功${NC}"
-else
-    echo -e "${RED}後端 .env.backend 文件不存在，無法設置環境變數${NC}"
-fi
-
 echo -e "${GREEN}=== 初始化完成 ===${NC}"
